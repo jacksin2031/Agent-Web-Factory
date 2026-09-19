@@ -16,7 +16,7 @@ If you have Node.js installed:
 npx skills add jacksin2031/Agent-Web-Factory --skill agent-web-factory -g -y
 ```
 
-This installs the skill at user scope so it can be reused across projects. The Skills CLI supports agent-skill installation from GitHub repositories and can target supported coding agents. citeturn448875search0turn448875search8
+This installs the skill at user scope so it can be reused across projects. The Skills CLI supports agent-skill installation from GitHub repositories and can target supported coding agents.
 
 To install only for a specific agent:
 
@@ -64,7 +64,7 @@ GitHub also supports previewing the skill before installation:
 gh skill preview jacksin2031/Agent-Web-Factory agent-web-factory
 ```
 
-GitHub documents `gh skill install`, `--agent`, and `--scope` for agent-skill installation. citeturn448875search1
+GitHub documents `gh skill install`, `--agent`, and `--scope` for agent-skill installation.
 
 ### After installation
 
