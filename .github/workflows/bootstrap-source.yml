@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - ".github/workflows/bootstrap-source.yml"\n      - ".bootstrap/small-*.b64"
+      - ".github/workflows/bootstrap-source.yml"
+      - ".bootstrap/small-*.b64"
   workflow_dispatch:
 
 permissions:
