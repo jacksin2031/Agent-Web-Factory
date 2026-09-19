@@ -4,6 +4,106 @@ Agent Web Factory is a vendor-neutral Agent Skill for turning a short natural-la
 
 The same root `SKILL.md` is the normative workflow across supported AI coding agents. Runtime-specific files only explain installation, discovery, or tool wiring; they are not allowed to weaken the core safety policy.
 
+## Quick Start
+
+### 1. Install the skill
+
+Choose the folder for your AI coding agent and copy this repository into it.
+
+**OpenAI Codex / ChatGPT Skills**
+
+```text
+.agents/skills/agent-web-factory/
+```
+
+**Gemini CLI**
+
+```text
+.agents/skills/agent-web-factory/
+```
+
+or:
+
+```text
+.gemini/skills/agent-web-factory/
+```
+
+**GitHub Copilot**
+
+```text
+.agents/skills/agent-web-factory/
+```
+
+or:
+
+```text
+.github/skills/agent-web-factory/
+```
+
+**Claude Code**
+
+```text
+.claude/skills/agent-web-factory/
+```
+
+### 2. Connect deployment tools when needed
+
+For Vercel, compatible MCP-enabled runtimes can use the official endpoint:
+
+```text
+https://mcp.vercel.com
+```
+
+For Codex:
+
+```bash
+codex mcp add vercel --url https://mcp.vercel.com
+```
+
+### 3. Give the agent one requirement
+
+Example:
+
+```text
+Use Agent Web Factory to build a production-ready AI travel budget planner for Japan.
+
+Plan all required features first. Handle all genuinely zero-cost APIs and technical setup autonomously. Add authentication only if it is required, include SEO and visual testing, deploy it to Vercel, and continue fixing issues until it is ready for public production.
+
+Ask me for explicit confirmation immediately before any action that can cost money.
+```
+
+For batch generation:
+
+```text
+Use Agent Web Factory to plan and build 5 distinct production-ready AI utility websites for people living in Japan. Research current market opportunities, avoid duplicate/thin sites, handle all genuinely zero-cost integrations autonomously, run functional/security/visual QA, and deploy every site that passes the release gates. Ask me before any paid action.
+```
+
+### 4. Let the agent continue until a release gate is reached
+
+The normal workflow is:
+
+```text
+PLAN
+  -> IMPLEMENT
+  -> TEST
+  -> FIX
+  -> VISUAL QA
+  -> PREVIEW
+  -> PRODUCTION
+  -> PRODUCTION SMOKE TEST
+  -> SEO / SECURITY / INTEGRATION CHECKS
+  -> COMPLETE
+```
+
+The agent should stop only when:
+
+- explicit human approval is required for an action that can create a monetary charge;
+- a provider requires unavoidable human identity or authorization steps such as OAuth consent, 2FA, CAPTCHA, ownership proof, or legal/business information;
+- an external review or asynchronous provider state is genuinely pending;
+- a required tool or permission is unavailable.
+
+A budget or price cap is never permission to spend.
+
 ## Runtime targets
 
 First-class adapter targets:
