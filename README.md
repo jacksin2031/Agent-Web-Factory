@@ -6,103 +6,75 @@ The same root `SKILL.md` is the normative workflow across supported AI coding ag
 
 ## Quick Start
 
-### 1. Install the skill
+Install Agent Web Factory in one command.
 
-Choose the folder for your AI coding agent and copy this repository into it.
+### Skills CLI — recommended
 
-**OpenAI Codex / ChatGPT Skills**
+If you have Node.js installed:
+
+```powershell
+npx skills add jacksin2031/Agent-Web-Factory --skill agent-web-factory -g -y
+```
+
+This installs the skill at user scope so it can be reused across projects. The Skills CLI supports agent-skill installation from GitHub repositories and can target supported coding agents. citeturn448875search0turn448875search8
+
+To install only for a specific agent:
+
+```powershell
+npx skills add jacksin2031/Agent-Web-Factory --skill agent-web-factory -g -a codex -y
+npx skills add jacksin2031/Agent-Web-Factory --skill agent-web-factory -g -a claude-code -y
+```
+
+### PowerShell — one-line installer
+
+No manual folder copying is required:
+
+```powershell
+iwr https://raw.githubusercontent.com/jacksin2031/Agent-Web-Factory/main/install.ps1 -OutFile "$env:TEMP\agent-web-factory-install.ps1"; & "$env:TEMP\agent-web-factory-install.ps1"
+```
+
+By default, the installer installs the skill for the supported user-level locations and verifies the downloaded `SKILL.md` identity before replacing an existing installation.
+
+Install for one runtime only:
+
+```powershell
+& "$env:TEMP\agent-web-factory-install.ps1" -Runtime Codex
+& "$env:TEMP\agent-web-factory-install.ps1" -Runtime Gemini
+& "$env:TEMP\agent-web-factory-install.ps1" -Runtime Copilot
+& "$env:TEMP\agent-web-factory-install.ps1" -Runtime Claude
+```
+
+Install into the current project instead of the user profile:
+
+```powershell
+& "$env:TEMP\agent-web-factory-install.ps1" -Scope Project -Runtime All
+```
+
+### GitHub CLI
+
+GitHub CLI 2.90.0 or later can install a specific agent skill directly:
+
+```powershell
+gh skill install jacksin2031/Agent-Web-Factory agent-web-factory --scope user
+```
+
+GitHub also supports previewing the skill before installation:
+
+```powershell
+gh skill preview jacksin2031/Agent-Web-Factory agent-web-factory
+```
+
+GitHub documents `gh skill install`, `--agent`, and `--scope` for agent-skill installation. citeturn448875search1
+
+### After installation
+
+Restart or reload your coding agent if it was already running, then try:
 
 ```text
-.agents/skills/agent-web-factory/
+Use Agent Web Factory to plan and build a production-ready website from my requirement. Continue through implementation, testing, rendered visual QA, deployment, and production acceptance. Ask for explicit human confirmation immediately before any action that can create a monetary charge.
 ```
 
-**Gemini CLI**
-
-```text
-.agents/skills/agent-web-factory/
-```
-
-or:
-
-```text
-.gemini/skills/agent-web-factory/
-```
-
-**GitHub Copilot**
-
-```text
-.agents/skills/agent-web-factory/
-```
-
-or:
-
-```text
-.github/skills/agent-web-factory/
-```
-
-**Claude Code**
-
-```text
-.claude/skills/agent-web-factory/
-```
-
-### 2. Connect deployment tools when needed
-
-For Vercel, compatible MCP-enabled runtimes can use the official endpoint:
-
-```text
-https://mcp.vercel.com
-```
-
-For Codex:
-
-```bash
-codex mcp add vercel --url https://mcp.vercel.com
-```
-
-### 3. Give the agent one requirement
-
-Example:
-
-```text
-Use Agent Web Factory to build a production-ready AI travel budget planner for Japan.
-
-Plan all required features first. Handle all genuinely zero-cost APIs and technical setup autonomously. Add authentication only if it is required, include SEO and visual testing, deploy it to Vercel, and continue fixing issues until it is ready for public production.
-
-Ask me for explicit confirmation immediately before any action that can cost money.
-```
-
-For batch generation:
-
-```text
-Use Agent Web Factory to plan and build 5 distinct production-ready AI utility websites for people living in Japan. Research current market opportunities, avoid duplicate/thin sites, handle all genuinely zero-cost integrations autonomously, run functional/security/visual QA, and deploy every site that passes the release gates. Ask me before any paid action.
-```
-
-### 4. Let the agent continue until a release gate is reached
-
-The normal workflow is:
-
-```text
-PLAN
-  -> IMPLEMENT
-  -> TEST
-  -> FIX
-  -> VISUAL QA
-  -> PREVIEW
-  -> PRODUCTION
-  -> PRODUCTION SMOKE TEST
-  -> SEO / SECURITY / INTEGRATION CHECKS
-  -> COMPLETE
-```
-
-The agent should stop only when:
-
-- explicit human approval is required for an action that can create a monetary charge;
-- a provider requires unavoidable human identity or authorization steps such as OAuth consent, 2FA, CAPTCHA, ownership proof, or legal/business information;
-- an external review or asynchronous provider state is genuinely pending;
-- a required tool or permission is unavailable.
-
-A budget or price cap is never permission to spend.
+> Installing the skill never authorizes spending. Purchases, billable APIs, paid upgrades, or any other potentially chargeable action still require explicit human confirmation immediately before execution.
 
 ## Runtime targets
 
