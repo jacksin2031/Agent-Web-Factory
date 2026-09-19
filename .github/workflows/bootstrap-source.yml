@@ -1,0 +1,149 @@
+name: Bootstrap full source and prerelease
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/bootstrap-source.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_ARCHIVE_SHA256: "661d767826643276d590592c90013a3f3b19178f03f7b22d5bc29825bf80543b"
+      RELEASE_VERSION: "0.10.0-beta.4"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct verified beta3 source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(find .bootstrap -maxdepth 1 -name 'small-*.b64' | wc -l)" -eq 66
+          cat .bootstrap/small-*.b64 > /tmp/agent-web-factory.zip.b64
+          base64 --decode /tmp/agent-web-factory.zip.b64 > /tmp/agent-web-factory.zip
+          actual="$(sha256sum /tmp/agent-web-factory.zip | awk '{print $1}')"
+          echo "archive sha256: $actual"
+          test "$actual" = "$EXPECTED_ARCHIVE_SHA256"
+          unzip -t /tmp/agent-web-factory.zip
+          rm -rf /tmp/awf-source
+          mkdir -p /tmp/awf-source
+          unzip -q /tmp/agent-web-factory.zip -d /tmp/awf-source
+          test -f /tmp/awf-source/agent-web-factory/SKILL.md
+          test -f /tmp/awf-source/agent-web-factory/scripts/package_release.py
+
+      - name: Materialize full repository source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp README.md /tmp/README.quickstart.md
+          cp install.ps1 /tmp/install.ps1
+          cp -a /tmp/awf-source/agent-web-factory/. .
+          cp /tmp/README.quickstart.md README.md
+          cp /tmp/install.ps1 install.ps1
+          printf '%s\n' "$RELEASE_VERSION" > VERSION
+          rm -rf .bootstrap
+          rm -f .github/workflows/bootstrap-source.yml
+
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("CHANGELOG.md")
+          text = p.read_text(encoding="utf-8")
+          version = "0.10.0-beta.4"
+          if f"## {version}" not in text:
+              block = """## 0.10.0-beta.4 - 2026-09-19
+
+          - Add one-command Quick Start installation for Skills CLI, GitHub CLI, and Windows PowerShell.
+          - Add `install.ps1` with staged replacement, identity validation, runtime targeting, and user/project scopes.
+          - Publish the complete multi-runtime Agent Web Factory source tree from a checksum-verified archive.
+          - Keep paid-action human confirmation mandatory across every supported runtime.
+
+          """
+              if text.startswith("# "):
+                  first = text.find("\n")
+                  text = text[:first+1] + "\n" + block + text[first+1:].lstrip("\n")
+              else:
+                  text = block + text
+              p.write_text(text, encoding="utf-8")
+          PY
+
+          test -f SKILL.md
+          test -f install.ps1
+          grep -q '^name: agent-web-factory$' SKILL.md
+          grep -q 'npx skills add jacksin2031/Agent-Web-Factory' README.md
+          grep -q 'raw.githubusercontent.com/jacksin2031/Agent-Web-Factory/main/install.ps1' README.md
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validators
+        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt
+
+      - name: Run all automated test shards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/run_test_shard.py core
+          python scripts/run_test_shard.py manifest-cost
+          python scripts/run_test_shard.py policy-compat
+
+      - name: Run release validators
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/validate_manifest.py assets/batch.example.json
+          python scripts/compatibility_check.py
+          python scripts/validate_visual_qa.py assets/visual-qa.example.json
+          python scripts/validate_plan.py assets/site-plan.example.json
+          python scripts/preflight.py
+
+      - name: Build and inspect prerelease package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          python scripts/package_release.py --output "dist/agent-web-factory-$RELEASE_VERSION.zip"
+          python - <<'PY'
+          import zipfile
+          z = zipfile.ZipFile("dist/agent-web-factory-0.10.0-beta.4.zip")
+          names = z.namelist()
+          assert any(n.endswith("/SKILL.md") for n in names)
+          assert any(n.endswith("/install.ps1") for n in names)
+          assert any(n.endswith("/README.md") for n in names)
+          assert not any("/.bootstrap/" in n for n in names)
+          assert z.testzip() is None
+          PY
+          sha256sum "dist/agent-web-factory-$RELEASE_VERSION.zip" > "dist/agent-web-factory-$RELEASE_VERSION.zip.sha256"
+
+      - name: Commit full source and tag prerelease
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "release: materialize Agent Web Factory $RELEASE_VERSION"
+          git tag "v$RELEASE_VERSION"
+          git push origin HEAD:main
+          git push origin "v$RELEASE_VERSION"
+
+      - name: Publish GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "v$RELEASE_VERSION" \
+            "dist/agent-web-factory-$RELEASE_VERSION.zip" \
+            "dist/agent-web-factory-$RELEASE_VERSION.zip.sha256" \
+            --title "v$RELEASE_VERSION" \
+            --prerelease \
+            --generate-notes
