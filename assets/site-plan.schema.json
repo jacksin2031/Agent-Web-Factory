@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Web Factory Site Plan",
+  "type": "object",
+  "required": [
+    "site_id",
+    "target_release",
+    "product_goal",
+    "target_users",
+    "primary_user_journey",
+    "features",
+    "architecture",
+    "integrations",
+    "quality_gates",
+    "release_acceptance",
+    "blockers"
+  ],
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "target_release": {
+      "enum": ["public-production", "user-limited"]
+    },
+    "product_goal": {
+      "type": "string",
+      "minLength": 10
+    },
+    "target_users": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "primary_user_journey": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "features": {
+      "type": "object",
+      "required": ["required", "optional", "rejected"],
+      "properties": {
+        "required": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "optional": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "rejected": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": true
+    },
+    "architecture": {
+      "type": "object",
+      "required": ["framework", "hosting", "data_strategy"],
+      "properties": {
+        "framework": {"type": "string", "minLength": 1},
+        "hosting": {"type": "string", "minLength": 1},
+        "data_strategy": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "integrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "purpose", "cost_class", "action_policy"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "purpose": {"type": "string", "minLength": 1},
+          "cost_class": {
+            "enum": ["zero-cost", "potentially-billable", "paid", "unknown"]
+          },
+          "action_policy": {
+            "enum": ["auto", "human-cost-gate", "human-authorization", "research-required"]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "quality_gates": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "functional",
+          "security",
+          "privacy",
+          "accessibility",
+          "performance",
+          "seo",
+          "visual",
+          "preview",
+          "production-smoke",
+          "integration"
+        ]
+      }
+    },
+    "release_acceptance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "description"],
+        "properties": {
+          "type": {
+            "enum": ["human-cost-gate", "human-authorization", "external-provider", "legal-identity", "other"]
+          },
+          "description": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

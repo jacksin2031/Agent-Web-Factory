@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "skill_name": "agent-web-factory",
+  "policy": {
+    "core_skill_file": "SKILL.md",
+    "paid_action_human_confirmation_mandatory": true,
+    "runtime_adapter_may_weaken_core_policy": false,
+    "planning_before_implementation_mandatory": true,
+    "autonomous_until_public_production": true,
+    "zero_cost_external_actions_auto": true
+  },
+  "runtimes": [
+    {
+      "id": "openai",
+      "display_name": "OpenAI Codex / ChatGPT Skills",
+      "support_level": "first-class",
+      "skill_format": "SKILL.md",
+      "project_paths": [
+        ".agents/skills/agent-web-factory"
+      ],
+      "user_paths": [
+        "~/.agents/skills/agent-web-factory"
+      ],
+      "adapter": "adapters/openai/README.md",
+      "native_metadata": "agents/openai.yaml",
+      "automated_contract_tested": true,
+      "real_runtime_e2e_required_for_stable": true
+    },
+    {
+      "id": "gemini-cli",
+      "display_name": "Gemini CLI",
+      "support_level": "first-class",
+      "skill_format": "SKILL.md",
+      "project_paths": [
+        ".agents/skills/agent-web-factory",
+        ".gemini/skills/agent-web-factory"
+      ],
+      "user_paths": [
+        "~/.agents/skills/agent-web-factory",
+        "~/.gemini/skills/agent-web-factory"
+      ],
+      "adapter": "adapters/gemini-cli/README.md",
+      "automated_contract_tested": true,
+      "real_runtime_e2e_required_for_stable": true
+    },
+    {
+      "id": "github-copilot",
+      "display_name": "GitHub Copilot Agent Skills",
+      "support_level": "first-class",
+      "skill_format": "SKILL.md",
+      "project_paths": [
+        ".agents/skills/agent-web-factory",
+        ".github/skills/agent-web-factory"
+      ],
+      "user_paths": [
+        "~/.agents/skills/agent-web-factory",
+        "~/.copilot/skills/agent-web-factory"
+      ],
+      "adapter": "adapters/github-copilot/README.md",
+      "automated_contract_tested": true,
+      "real_runtime_e2e_required_for_stable": true
+    },
+    {
+      "id": "claude-code",
+      "display_name": "Claude Code",
+      "support_level": "first-class",
+      "skill_format": "SKILL.md",
+      "project_paths": [
+        ".claude/skills/agent-web-factory"
+      ],
+      "user_paths": [
+        "~/.claude/skills/agent-web-factory"
+      ],
+      "adapter": "adapters/claude-code/README.md",
+      "automated_contract_tested": true,
+      "real_runtime_e2e_required_for_stable": true
+    },
+    {
+      "id": "generic",
+      "display_name": "Generic tool-capable coding agent",
+      "support_level": "best-effort",
+      "skill_format": "SKILL.md or injected instructions",
+      "project_paths": [],
+      "user_paths": [],
+      "adapter": "adapters/generic/README.md",
+      "automated_contract_tested": true,
+      "real_runtime_e2e_required_for_stable": false
+    }
+  ]
+}

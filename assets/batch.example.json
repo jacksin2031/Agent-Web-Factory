@@ -1,0 +1,100 @@
+{
+  "run_id": "jp-tools-2026-09",
+  "mode": "batch",
+  "defaults": {
+    "framework": "nextjs",
+    "hosting": "vercel",
+    "indexing": true,
+    "analytics": false,
+    "ads": false
+  },
+  "execution_policy": {
+    "planning_required": true,
+    "target_release": "public-production",
+    "autonomy": "autonomous-until-complete",
+    "zero_cost_external_actions": "auto",
+    "paid_actions": "human-confirmation"
+  },
+  "cost_policy": {
+    "require_human_confirmation_for_paid_actions": true,
+    "approval_ttl_minutes": 15
+  },
+  "budget": {
+    "currency": "JPY",
+    "max_total_domain_cost": 30000,
+    "max_domain_cost_each": 3000,
+    "purchase_count_max": 10,
+    "max_ai_test_cost": 1.0,
+    "max_ai_production_cost_per_period": 25.0,
+    "ai_cost_period": "monthly"
+  },
+  "sites": [
+    {
+      "site_id": "sample-tool-a",
+      "brief": "An AI-assisted Japanese utility site with one complete deterministic tool and a focused AI explanation feature.",
+      "locale": "ja-JP",
+      "project_name": "sample-tool-a",
+      "ai": {
+        "enabled": true,
+        "purpose": "Explain deterministic tool results and answer scoped follow-up questions.",
+        "sdk": "vercel-ai-sdk",
+        "provider": "auto",
+        "model": "auto",
+        "capabilities": [
+          "chat",
+          "structured-generation"
+        ],
+        "real_provider_smoke_test": false
+      },
+      "auth": {
+        "enabled": true,
+        "provider": "auto",
+        "methods": [
+          "magic-link",
+          "oauth-google"
+        ],
+        "protected_routes": [
+          "/dashboard",
+          "/account"
+        ],
+        "authorization_model": "rls",
+        "requires_persistent_user_data": true,
+        "require_email_verification": true,
+        "account_recovery": false
+      },
+      "ads": {
+        "enabled": true,
+        "provider": "adsense",
+        "strategy": "manual-slots",
+        "placements": [
+          "content-after-result"
+        ],
+        "ads_txt": true,
+        "publisher_id": null,
+        "consent_mode": "auto",
+        "production_activation_requested": false
+      },
+      "analytics": {
+        "enabled": false,
+        "provider": "auto",
+        "consent_mode": "auto",
+        "collect_sensitive_content": false
+      },
+      "domain_policy": {
+        "mode": "auto",
+        "domain": null,
+        "allowed_tlds": [
+          ".jp",
+          ".com"
+        ],
+        "max_annual_cost": 3000
+      },
+      "google_search": {
+        "enabled": true,
+        "verify_domain": true,
+        "submit_sitemap": true,
+        "inspect_homepage": true
+      }
+    }
+  ]
+}

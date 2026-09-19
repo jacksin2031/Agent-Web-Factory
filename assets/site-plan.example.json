@@ -1,0 +1,65 @@
+{
+  "site_id": "sample-tool-a",
+  "target_release": "public-production",
+  "product_goal": "Provide a reliable AI-assisted utility with a deterministic core workflow and scoped explanations.",
+  "target_users": [
+    "People in Japan who need a focused self-service utility"
+  ],
+  "primary_user_journey": [
+    "Open the public tool and provide the required inputs",
+    "Receive a deterministic result",
+    "Optionally ask the AI for a scoped explanation",
+    "Save the result after signing in"
+  ],
+  "features": {
+    "required": [
+      "Deterministic primary tool",
+      "Scoped AI explanation",
+      "Account sign-in and saved history",
+      "Responsive accessible interface"
+    ],
+    "optional": [
+      "Advertising after provider approval"
+    ],
+    "rejected": [
+      "Decorative general-purpose chatbot"
+    ]
+  },
+  "architecture": {
+    "framework": "Next.js App Router + TypeScript",
+    "hosting": "Vercel",
+    "data_strategy": "Managed per-user persistence with server-side authorization"
+  },
+  "integrations": [
+    {
+      "name": "Authentication provider",
+      "purpose": "Sign-in and user identity",
+      "cost_class": "zero-cost",
+      "action_policy": "auto"
+    },
+    {
+      "name": "AI provider",
+      "purpose": "Scoped explanation feature",
+      "cost_class": "potentially-billable",
+      "action_policy": "human-cost-gate"
+    }
+  ],
+  "quality_gates": [
+    "functional",
+    "security",
+    "privacy",
+    "accessibility",
+    "performance",
+    "seo",
+    "visual",
+    "preview",
+    "production-smoke",
+    "integration"
+  ],
+  "release_acceptance": [
+    "Primary journey passes in production",
+    "Mobile and desktop visual QA pass",
+    "No release-blocking security, privacy, accessibility, or SEO issue remains"
+  ],
+  "blockers": []
+}

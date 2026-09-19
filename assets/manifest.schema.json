@@ -1,0 +1,503 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Web Factory Manifest",
+  "type": "object",
+  "required": [
+    "run_id",
+    "mode",
+    "defaults",
+    "execution_policy",
+    "cost_policy",
+    "budget",
+    "sites"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "enum": [
+        "single",
+        "batch"
+      ]
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "framework": {
+          "type": "string",
+          "default": "nextjs"
+        },
+        "hosting": {
+          "type": "string",
+          "default": "vercel"
+        },
+        "indexing": {
+          "type": "boolean",
+          "default": true
+        },
+        "analytics": {
+          "type": "boolean",
+          "default": false
+        },
+        "ads": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "currency": {
+          "type": "string",
+          "default": "JPY"
+        },
+        "max_total_domain_cost": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_domain_cost_each": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "purchase_count_max": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "allowed_tlds": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "pattern": "^\\.[A-Za-z0-9-]+$"
+          }
+        },
+        "max_ai_test_cost": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_ai_production_cost_per_period": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "ai_cost_period": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "daily",
+            "weekly",
+            "monthly",
+            "none",
+            null
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "sites": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "site_id",
+          "brief",
+          "project_name",
+          "ai",
+          "auth",
+          "ads",
+          "analytics",
+          "domain_policy",
+          "google_search"
+        ],
+        "properties": {
+          "site_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "brief": {
+            "type": "string",
+            "minLength": 1
+          },
+          "locale": {
+            "type": "string",
+            "default": "ja-JP"
+          },
+          "project_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "domain_policy": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "enum": [
+                  "existing",
+                  "approved",
+                  "auto",
+                  "vercel-subdomain-only"
+                ]
+              },
+              "domain": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "allowed_tlds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "max_annual_cost": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0
+              }
+            },
+            "required": [
+              "mode"
+            ],
+            "additionalProperties": true
+          },
+          "google_search": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": true
+              },
+              "verify_domain": {
+                "type": "boolean",
+                "default": true
+              },
+              "submit_sitemap": {
+                "type": "boolean",
+                "default": true
+              },
+              "inspect_homepage": {
+                "type": "boolean",
+                "default": true
+              }
+            },
+            "additionalProperties": true
+          },
+          "ai": {
+            "type": "object",
+            "required": [
+              "enabled"
+            ],
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "purpose": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sdk": {
+                "type": "string",
+                "default": "vercel-ai-sdk"
+              },
+              "provider": {
+                "type": "string",
+                "default": "auto"
+              },
+              "model": {
+                "type": "string",
+                "default": "auto"
+              },
+              "capabilities": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "chat",
+                    "structured-generation",
+                    "extraction",
+                    "tool-calling",
+                    "agent",
+                    "rag",
+                    "file-qa",
+                    "vision",
+                    "image-generation",
+                    "image-editing",
+                    "speech",
+                    "transcription",
+                    "realtime-voice",
+                    "classification",
+                    "rewriting",
+                    "summarization",
+                    "translation",
+                    "recommendation",
+                    "other"
+                  ]
+                }
+              },
+              "real_provider_smoke_test": {
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "additionalProperties": true
+          },
+          "auth": {
+            "type": "object",
+            "required": [
+              "enabled"
+            ],
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "authjs",
+                  "supabase",
+                  "clerk",
+                  "firebase",
+                  "custom"
+                ],
+                "default": "auto"
+              },
+              "methods": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "password",
+                    "magic-link",
+                    "email-otp",
+                    "phone-otp",
+                    "oauth-google",
+                    "oauth-github",
+                    "oauth-apple",
+                    "oauth-microsoft",
+                    "passkey",
+                    "anonymous",
+                    "other"
+                  ]
+                }
+              },
+              "protected_routes": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "pattern": "^/"
+                }
+              },
+              "authorization_model": {
+                "type": "string",
+                "enum": [
+                  "authenticated-user",
+                  "owner",
+                  "roles",
+                  "permissions",
+                  "rls",
+                  "custom"
+                ],
+                "default": "authenticated-user"
+              },
+              "requires_persistent_user_data": {
+                "type": "boolean",
+                "default": false
+              },
+              "require_email_verification": {
+                "type": "boolean",
+                "default": false
+              },
+              "account_recovery": {
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "additionalProperties": true
+          },
+          "ads": {
+            "type": "object",
+            "required": [
+              "enabled"
+            ],
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "adsense",
+                  "ad-manager",
+                  "other"
+                ],
+                "default": "auto"
+              },
+              "strategy": {
+                "type": "string",
+                "enum": [
+                  "auto-ads",
+                  "manual-slots",
+                  "mixed"
+                ],
+                "default": "manual-slots"
+              },
+              "placements": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "ads_txt": {
+                "type": "boolean",
+                "default": true
+              },
+              "publisher_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": null
+              },
+              "consent_mode": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "required",
+                  "not-required"
+                ],
+                "default": "auto"
+              },
+              "production_activation_requested": {
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "additionalProperties": true
+          },
+          "analytics": {
+            "type": "object",
+            "required": [
+              "enabled"
+            ],
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "provider": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "vercel-analytics",
+                  "google-analytics",
+                  "plausible",
+                  "other"
+                ],
+                "default": "auto"
+              },
+              "consent_mode": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "required",
+                  "not-required"
+                ],
+                "default": "auto"
+              },
+              "collect_sensitive_content": {
+                "const": false
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "cost_policy": {
+      "type": "object",
+      "required": [
+        "require_human_confirmation_for_paid_actions"
+      ],
+      "properties": {
+        "require_human_confirmation_for_paid_actions": {
+          "const": true
+        },
+        "approval_ttl_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1440,
+          "default": 15
+        }
+      },
+      "additionalProperties": false
+    },
+    "execution_policy": {
+      "type": "object",
+      "required": [
+        "planning_required",
+        "target_release",
+        "autonomy",
+        "zero_cost_external_actions",
+        "paid_actions"
+      ],
+      "properties": {
+        "planning_required": {
+          "const": true
+        },
+        "target_release": {
+          "enum": [
+            "public-production",
+            "user-limited"
+          ]
+        },
+        "autonomy": {
+          "const": "autonomous-until-complete"
+        },
+        "zero_cost_external_actions": {
+          "const": "auto"
+        },
+        "paid_actions": {
+          "const": "human-confirmation"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

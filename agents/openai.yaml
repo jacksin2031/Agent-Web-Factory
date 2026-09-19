@@ -1,0 +1,15 @@
+interface:
+  display_name: "Agent Web Factory"
+  short_description: "Build, deploy, and batch-manage production websites with AI, auth, ads, and analytics from a short request"
+  default_prompt: "Use Agent Web Factory to plan the required features first, then autonomously build, test, fix, configure genuinely zero-cost integrations, and fully deploy the requested website(s) to public-production acceptance. Include useful AI features, authentication, advertising/analytics, production hardening, visual QA, domain/DNS, and Google Search Console where requested. Never execute a potentially billable action without explicit human confirmation immediately before the charge."
+
+policy:
+  allow_implicit_invocation: true
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "vercel"
+      description: "Official Vercel MCP for project/deployment management, domain price checks, and Vercel documentation."
+      transport: "streamable_http"
+      url: "https://mcp.vercel.com"

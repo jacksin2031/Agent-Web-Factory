@@ -1,0 +1,39 @@
+name: Bug report
+description: Report reproducible Skill, script, state, or deployment workflow behavior.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include API keys, OAuth tokens, private domains, credentials, or other secrets."
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Minimal request or scenario
+      description: Redact private data and credentials.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Agent runtime and version (Codex, Gemini CLI, GitHub Copilot, Claude Code, or other), OS, Python, Node, Vercel CLI/MCP, and relevant provider names.

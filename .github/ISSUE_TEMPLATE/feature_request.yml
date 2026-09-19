@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a new website-factory capability or provider integration.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user or deployment problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: cost
+    attributes:
+      label: Cost safety
+      options:
+        - label: I understand that any potentially billable action must remain behind explicit human confirmation.
+          required: true

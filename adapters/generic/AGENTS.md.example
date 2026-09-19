@@ -1,0 +1,5 @@
+# Agent Web Factory integration
+
+When the user asks to build, deploy, batch-generate, monetize, add AI/auth to, or productionize one or more websites, load and follow `path/to/agent-web-factory/SKILL.md` plus only the referenced support files needed for the task.
+
+The Agent Web Factory human cost gate is mandatory. Never purchase, upgrade, provision a paid resource, or execute another potentially billable action without explicit human confirmation immediately before that exact action.

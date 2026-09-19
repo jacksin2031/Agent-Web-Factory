@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "site_id": "example-site",
+  "status": "PASS",
+  "method": "browser_automation",
+  "tested_url": "https://example-preview.vercel.app",
+  "executed_at": "2026-09-19T00:00:00Z",
+  "checks": [
+    {
+      "route": "/",
+      "state": "default",
+      "viewport": {"name": "mobile", "width": 390, "height": 844},
+      "screenshot": ".web-factory/reports/visual/example-site/home-mobile.png",
+      "assertions": {
+        "rendered": true,
+        "no_horizontal_overflow": true,
+        "no_critical_overlap": true,
+        "no_broken_media": true,
+        "critical_controls_visible": true
+      }
+    },
+    {
+      "route": "/",
+      "state": "default",
+      "viewport": {"name": "desktop", "width": 1440, "height": 900},
+      "screenshot": ".web-factory/reports/visual/example-site/home-desktop.png",
+      "assertions": {
+        "rendered": true,
+        "no_horizontal_overflow": true,
+        "no_critical_overlap": true,
+        "no_broken_media": true,
+        "critical_controls_visible": true
+      }
+    }
+  ],
+  "unresolved_issues": []
+}
